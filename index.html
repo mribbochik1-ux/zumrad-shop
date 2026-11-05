@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zumrad Shop - Ibrohimbek tomonidan yaratilgan</title>
+    <style>
+        :root {
+            --bg-color: #f7f9fa;
+            --text-color: #333;
+            --header-bg: #fff;
+            --card-bg: #fff;
+            --border-color: #eaeaea;
+            --input-bg: #fff;
+            --modal-bg: #fff;
+            --footer-bg: #fff;
+            --primary: #ff6600;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --text-color: #f1f1f1;
+            --header-bg: #1e1e1e;
+            --card-bg: #1e1e1e;
+            --border-color: #2c2c2c;
+            --input-bg: #2d2d2d;
+            --modal-bg: #1e1e1e;
+            --footer-bg: #1e1e1e;
+            --primary: #ff7711;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--header-bg);
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-wrapper {
+            width: 45px;
+            height: 45px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 8px rgba(255, 102, 0, 0.3);
+        }
+
+        .logo-inner {
+            width: 32px;
+            height: 32px;
+            background-color: #ffffff;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-text {
+            color: var(--primary);
+            font-weight: 900;
+            font-size: 17px;
+        }
+
+        .shop-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .shop-subtitle {
+            font-size: 11px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .creator-badge {
+            background: rgba(255, 102, 0, 0.1);
+            color: var(--primary);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            border: 1px dashed var(--primary);
+            display: none;
+        }
+
+        @media(min-width: 768px) {
+            .creator-badge {
+                display: block;
+            }
+        }
+
+        .action-btn {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            padding: 9px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            width: 100%;
+            flex: 1;
+        }
+
+        /* Banner va Taymer */
+        .promo-banner {
+            background: linear-gradient(135deg, #ff6600, #ff8533);
+            color: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            box-shadow: 0 10px 25px rgba(255, 102, 0, 0.2);
+        }
+
+        .promo-text h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .promo-text p {
+            font-size: 15px;
+            opacity: 0.9;
+        }
+
+        .timer-box {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 12px 20px;
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+            text-align: center;
+        }
+
+        .timer-box span {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .timer-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
+
+        /* Qidiruv va Slayder filtr paneli */
+        .filter-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            align-items: center;
+            position: relative;
+        }
+
+        .search-wrapper {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 20px;
+            font-size: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            outline: none;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+        }
+
+        /* Tezkor qidirish (Autocomplete dropdown) */
+        .autocomplete-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--modal-bg);
+            border: 1px solid var(--border-color);
+            border-top: none;
+            border-radius: 0 0 12px 12px;
+            z-index: 99;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .autocomplete-item {
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .autocomplete-item:hover {
+            background: rgba(255, 102, 0, 0.1);
+        }
+
+        .price-filter-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--input-bg);
+            padding: 8px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 14px;
+        }
+
+        .price-filter-box input {
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .sort-select {
+            padding: 14px 20px;
+            font-size: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            outline: none;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            cursor: pointer;
+        }
+
+        /* Kategoriyalar */
+        .categories {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 9px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .category-btn.active {
+            background-color: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+            box-shadow: 0 4px 10px rgba(255, 102, 0, 0.2);
+        }
+
+        /* Mahsulotlar paneli */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .stock-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: #ff4d4d;
+            color: white;
+            padding: 4px 8px;
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 6px;
+            z-index: 2;
+        }
+
+        .favorite-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            z-index: 2;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 190px;
+            overflow: hidden;
+            background-color: #f1f3f5;
+            cursor: pointer;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .product-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+
+        .product-title:hover {
+            color: var(--primary);
+        }
+
+        .rating-stars {
+            font-size: 13px;
+            color: #f5a623;
+            margin-bottom: 8px;
+        }
+
+        .price-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .product-price {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .old-price {
+            font-size: 13px;
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .buy-btn {
+            margin-top: auto;
+            width: 100%;
+            padding: 11px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Modallar umumiy */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            justify-content: flex-end;
+            z-index: 1000;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        /* Savatcha va Wishlist Modallari */
+        .cart-modal {
+            width: 100%;
+            max-width: 420px;
+            background: var(--modal-bg);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        .cart-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .cart-item img {
+            width: 55px;
+            height: 55px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-title {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .cart-item-price {
+            font-size: 13px;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .qty-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .qty-btn {
+            background: var(--border-color);
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .remove-item {
+            background: none;
+            border: none;
+            color: #ff4d4d;
+            cursor: pointer;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .checkout-form {
+            padding: 15px 20px;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .checkout-form input, .checkout-form select {
+            width: 100%;
+            padding: 10px 14px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            background: var(--input-bg);
+            color: var(--text-color);
+        }
+
+        .payment-methods {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .pay-option {
+            flex: 1;
+            padding: 8px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            background: var(--input-bg);
+        }
+
+        .pay-option.selected {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .cart-footer {
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+            background: var(--card-bg);
+        }
+
+        .total-price {
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* Success Popup Modal */
+        .success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1200;
+        }
+
+        .success-overlay.open {
+            display: flex;
+        }
+
+        .success-modal {
+            background: var(--modal-bg);
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            max-width: 350px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: scaleUp 0.3s ease;
+        }
+
+        @keyframes scaleUp {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .success-icon {
+            font-size: 50px;
+            color: #28a745;
+            margin-bottom: 15px;
+        }
+
+        /* Mahsulot tafsilotlari Modali */
+        .detail-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1100;
+            padding: 20px;
+        }
+
+        .detail-overlay.open {
+            display: flex;
+        }
+
+        .detail-modal {
+            background: var(--modal-bg);
+            width: 100%;
+            max-width: 700px;
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .detail-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .detail-body {
+            padding: 25px;
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .detail-image-box {
+            flex: 1;
+            min-width: 250px;
+            height: 280px;
+            background: #f1f3f5;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .detail-image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .detail-info-box {
+            flex: 1;
+            min-width: 250px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .detail-title {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .detail-price-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .detail-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .detail-old-price {
+            font-size: 14px;
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .detail-desc {
+            font-size: 14px;
+            color: #777;
+            line-height: 1.5;
+        }
+
+        .option-group label {
+            font-size: 13px;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .option-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .opt-btn {
+            padding: 6px 12px;
+            font-size: 13px;
+            border: 1px solid var(--border-color);
+            background: var(--input-bg);
+            color: var(--text-color);
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .opt-btn.selected {
+            border-color: var(--primary);
+            background: rgba(255, 102, 0, 0.1);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .reviews-section {
+            padding: 0 25px 25px 25px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 10px;
+        }
+
+        .reviews-section h4 {
+            margin: 15px 0 10px 0;
+            font-size: 16px;
+        }
+
+        .review-list {
+            max-height: 150px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .review-item {
+            background: var(--bg-color);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        .review-form input, .review-form textarea {
+            width: 100%;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--input-bg);
+            color: var(--text-color);
+            font-size: 13px;
+        }
+
+        .review-form select {
+            padding: 6px 10px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: var(--input-bg);
+            color: var(--text-color);
+        }
+
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 25px 0;
+            text-align: center;
+            color: var(--text-color);
+            font-size: 14px;
+            background-color: var(--footer-bg);
+            margin-top: auto;
+        }
+
+        footer .author {
+            color: var(--primary);
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header va Logotip -->
+    <header>
+        <div class="header-container">
+            <div class="logo-section">
+                <div class="logo-wrapper">
+                    <div class="logo-inner">
+                        <span class="logo-text">Z</span>
+                    </div>
+                </div>
+                <div class="shop-title">
+                    Zumrad Shop
+                    <span class="shop-subtitle">by Ibrohimbek</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div class="creator-badge">✨ Dasturchi: Ibrohimbek</div>
+                <button class="action-btn" onclick="toggleTheme()">🌓 <span id="themeText">Tun</span></button>
+                <button class="action-btn" onclick="toggleWishlist()">❤️ Sevimlilar (<span id="wishCount">0</span>)</button>
+                <button class="action-btn" onclick="toggleCart()">🛒 Savatcha (<span id="cartCount">0</span>)</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Reklama Banneri va Taymer -->
+        <div class="promo-banner">
+            <div class="promo-text">
+                <h2>Super Chegirmalar Kunlari!</h2>
+                <p>Eng sara mahsulotlarga ulgurib qoling. Aksiya vaqtinchalik.</p>
+            </div>
+            <div class="timer-box">
+                <span id="promoTimer">12:45:30</span>
+                <div class="timer-label">Aksiya tugashiga qoldi</div>
+            </div>
+        </div>
+
+        <!-- Qidirish, Tezkor Qidirish (Autocomplete) va Narx Slayderi -->
+        <div class="filter-bar">
+            <div class="search-wrapper">
+                <input type="text" id="searchInput" class="search-input" placeholder="Mahsulotlarni qidirish..." oninput="handleSearchInput()">
+                <div class="autocomplete-list" id="autocompleteList"></div>
+            </div>
+            
+            <div class="price-filter-box">
+                <input type="checkbox" id="priceFilterToggle" onchange="filterProducts()">
+                <label for="priceFilterToggle">Faqat 300,000 so'mgacha</label>
+            </div>
+
+            <select id="sortSelect" class="sort-select" onchange="sortProducts()">
+                <option value="default">Saralash</option>
+                <option value="low-high">Arzonidan qimmatiga</option>
+                <option value="high-low">Qimmatidan arzoniga</option>
+            </select>
+        </div>
+
+        <!-- Kategoriyalar -->
+        <div class="categories" id="categoryContainer">
+            <button class="category-btn active" data-category="all" onclick="setCategory('all', this)">Barchasi</button>
+            <button class="category-btn" data-category="shoes" onclick="setCategory('shoes', this)">Oyoq Kiyimlar</button>
+            <button class="category-btn" data-category="bags" onclick="setCategory('bags', this)">Sumkalar</button>
+            <button class="category-btn" data-category="electronics" onclick="setCategory('electronics', this)">Elektronika</button>
+            <button class="category-btn" data-category="accessories" onclick="setCategory('accessories', this)">Aksessuarlar</button>
+        </div>
+
+        <!-- Mahsulotlar ro'yxati -->
+        <div class="products-grid" id="productsGrid">
+            <!-- 1-Mahsulot -->
+            <div class="product-card" data-category="shoes" data-price="299000" data-name="sport oyoq kiyimi">
+                <div class="stock-badge">Qoldi: 3 ta</div>
+                <button class="favorite-btn" onclick="toggleFavorite(0, this)">🤍</button>
+                <div class="product-image" onclick="openDetail(0)">
+                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff" alt="Sport Oyoq Kiyimi" onerror="this.src='https://via.placeholder.com/300?text=Zumrad+Shop'">
+                </div>
+                <div class="product-info">
+                    <div class="product-title" onclick="openDetail(0)">Sport Oyoq Kiyimi</div>
+                    <div class="rating-stars">★★★★★ <span style="color:var(--text-color); font-size:11px;">(4.9)</span></div>
+                    <div class="price-box">
+                        <span class="product-price">299,000 so'm</span>
+                        <span class="old-price">350,000 so'm</span>
+                    </div>
+                    <button class="buy-btn" onclick="openDetail(0)">Tanlab sotib olish</button>
+                </div>
+            </div>
+
+            <!-- 2-Mahsulot -->
+            <div class="product-card" data-category="shoes" data-price="420000" data-name="klassik oyoq kiyim">
+                <div class="stock-badge" style="background:#f5a623;">Tugab bormoqda</div>
+                <button class="favorite-btn" onclick="toggleFavorite(1, this)">🤍</button>
+                <div class="product-image" onclick="openDetail(1)">
+                    <img src="https://images.unsplash.com/photo-1533867617858-e7d97e0afd8b" alt="Klassik Oyoq Kiyim" onerror="this.src='https://via.placeholder.com/300?text=Zumrad+Shop'">
+                </div>
+                <div class="product-info">
+                    <div class="product-title" onclick="openDetail(1)">Klassik Oyoq Kiyim</div>
+                    <div class="rating-stars">★★★★☆ <span style="color:var(--text-color); font-size:11px;">(4.7)</span></div>
+                    <div class="price-box">
+                        <span class="product-price">420,000 so'm</span>
+                    </div>
+                    <button class="buy-btn" onclick="openDetail(1)">Tanlab sotib olish</button>
+                </div>
+            </div>
+
+            <!-- 3-Mahsulot -->
+            <div class="product-card" data-category="bags" data-price="350000" data-name="charm sumka">
+                <div class="stock-badge">Qoldi: 5 ta</div>
+                <button class="favorite-btn" onclick="toggleFavorite(2, this)">🤍</button>
+                <div class="product-image" onclick="openDetail(2)">
+                    <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3" alt="Charm Sumka" onerror="this.src='https://via.placeholder.com/300?text=Zumrad+Shop'">
+                </div>
+                <div class="product-info">
+                    <div class="product-title" onclick="openDetail(2)">Charm Sumka</div>
+                    <div class="rating-stars">★★★★★ <span style="color:var(--text-color); font-size:11px;">(5.0)</span></div>
+                    <div class="price-box">
+                        <span class="product-price">350,000 so'm</span>
+                        <span class="old-price">400,000 so'm</span>
+                    </div>
+                    <button class="buy-btn" onclick="openDetail(2)">Tanlab sotib olish</button>
+                </div>
+            </div>
+
+            <!-- 4-Mahsulot -->
+            <div class="product-card" data-category="electronics" data-price="240000" data-name="simsiz quloqchin">
+                <div class="stock-badge">Qoldi: 2 ta</div>
+                <button class="favorite-btn" onclick="toggleFavorite(3, this)">🤍</button>
+                <div class="product-image" onclick="openDetail(3)">
+                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e" alt="Simsiz Quloqchin" onerror="this.src='https://via.placeholder.com/300?text=Zumrad+Shop'">
+                </div>
+                <div class="product-info">
+                    <div class="product-title" onclick="openDetail(3)">Simsiz Quloqchin</div>
+                    <div class="rating-stars">★★★★☆ <span style="color:var(--text-color); font-size:11px;">(4.6)</span></div>
+                    <div class="price-box">
+                        <span class="product-price">240,000 so'm</span>
+                        <span class="old-price">300,000 so'm</span>
+                    </div>
+                    <button class="buy-btn" onclick="openDetail(3)">Tanlab sotib olish</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sevimli mahsulotlar (Wishlist) Modali -->
+    <div class="modal-overlay" id="wishlistModal">
+        <div class="cart-modal">
+            <div class="cart-header">
+                <h2>Sevimlilar (Wishlist)</h2>
+                <button class="close-btn" onclick="toggleWishlist()">&times;</button>
+            </div>
+            <div class="cart-items" id="wishlistItemsContainer"></div>
+        </div>
+    </div>
+
+    <!-- Mahsulot Tafsilotlari Modali -->
+    <div class="detail-overlay" id="detailModal">
+        <div class="detail-modal">
+            <div class="detail-header">
+                <h3 id="modalTitle">Mahsulot nomi</h3>
+                <button class="close-btn" onclick="closeDetail()">&times;</button>
+            </div>
+            <div class="detail-body">
+                <div class="detail-image-box">
+                    <img id="modalImage" src="" alt="Mahsulot rasmi">
+                </div>
+                <div class="detail-info-box">
+                    <div class="detail-title" id="modalTitleText">Mahsulot nomi</div>
+                    <div class="detail-price-box">
+                        <span class="detail-price" id="modalPrice">0 so'm</span>
+                        <span class="detail-old-price" id="modalOldPrice"></span>
+                    </div>
+                    <p class="detail-desc" id="modalDesc">Tavsif...</p>
+
+                    <div class="option-group">
+                        <label>O'lchamni tanlang:</label>
+                        <div class="option-buttons" id="sizeOptions"></div>
+                    </div>
+
+                    <div class="option-group">
+                        <label>Rangni tanlang:</label>
+                        <div class="option-buttons" id="colorOptions"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reviews-section">
+                <h4>Xaridorlar sharhlari va baholari</h4>
+                <div class="review-list" id="reviewList"></div>
+                <div class="review-form">
+                    <input type="text" id="reviewerName" placeholder="Ismingiz...">
+                    <select id="reviewRating">
+                        <option value="5">⭐⭐⭐⭐⭐ (5 - Ajoyib)</option>
+                        <option value="4">⭐⭐⭐⭐ (4 - Yaxshi)</option>
+                        <option value="3">⭐⭐⭐ (3 - Qoniqarli)</option>
+                    </select>
+                    <textarea id="reviewText" placeholder="Fikr va mulohazangizni yozing..." rows="2"></textarea>
+                    <button class="buy-btn" onclick="addReview()" style="padding: 8px; font-size: 13px;">Sharh qoldirish</button>
+                </div>
+            </div>
+
+            <div class="detail-header" style="border-top: 1px solid var(--border-color); background: var(--bg-color);">
+                <button class="buy-btn" onclick="addCurrentToCart()" style="width: 100%;">Savatchaga qo'shish</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Savatcha Modali -->
+    <div class="modal-overlay" id="cartModal">
+        <div class="cart-modal">
+            <div class="cart-header">
+                <h2>Savatcha</h2>
+                <button class="close-btn" onclick="toggleCart()">&times;</button>
+            </div>
+            <div class="cart-items" id="cartItemsContainer"></div>
+            
+            <div class="checkout-form">
+                <input type="text" id="customerName" placeholder="Ismingizni kiriting...">
+                <input type="tel" id="customerPhone" placeholder="Telefon raqamingiz (+998...):">
+                <input type="text" id="customerAddress" placeholder="Manzilingiz (Toshkent sh...):">
+                
+                <label style="font-size: 12px; font-weight: 600; display: block; margin-bottom: 5px;">To'lov turini tanlang:</label>
+                <div class="payment-methods">
+                    <div class="pay-option selected" onclick="setPayment('Click', this)">Click</div>
+                    <div class="pay-option" onclick="setPayment('Payme', this)">Payme</div>
+                    <div class="pay-option" onclick="setPayment('Uzum Pay', this)">Uzum Pay</div>
+                </div>
+            </div>
+
+            <div class="cart-footer">
+                <div class="total-price">
+                    <span>Jami:</span>
+                    <span id="totalPrice">0 so'm</span>
+                </div>
+                <button class="checkout-btn" onclick="checkout()">Buyurtmani rasmiylashtirish (Telegram)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Muvaffaqiyatli Buyurtma Popup Modali -->
+    <div class="success-overlay" id="successModal">
+        <div class="success-modal">
+            <div class="success-icon">✅</div>
+            <h3 style="margin-bottom: 10px;">Buyurtmangiz qabul qilindi!</h3>
+            <p style="font-size: 14px; color: #666; margin-bottom: 20px;">Tez orada operatorlarimiz siz bilan bog'lanishadi. Ibrohimbek tomonidan xizmat ko'rsatiladi.</p>
+            <button class="buy-btn" onclick="closeSuccessModal()">Tushunarli</button>
+        </div>
+    </div>
+
+    <!-- Footer qismi -->
+    <footer>
+        <p>&copy; 2026 <span class="author">Zumrad Shop</span>. Barcha huquqlar himoyalangan.</p>
+        <p style="margin-top: 5px; font-size: 13px; opacity: 0.7;">Sayt muallifi va yaratuvchisi: <strong>Ibrohimbek</strong></p>
+    </footer>
+
+    <script>
+        const productsData = [
+            {
+                title: "Sport Oyoq Kiyimi",
+                price: 299000,
+                oldPrice: 350000,
+                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
+                desc: "Yuqori sifatli va yengil sport oyoq kiyimi. Kundalik yugurish uchun juda qulay.",
+                sizes: ["38", "39", "40", "41", "42"],
+                colors: ["Qizil", "Qora", "Oq"],
+                reviews: [{ name: "Anvar", rating: "⭐⭐⭐⭐⭐", text: "Juda qulay va yengil ekan!" }]
+            },
+            {
+                title: "Klassik Oyoq Kiyim",
+                price: 420000,
+                oldPrice: 0,
+                image: "https://images.unsplash.com/photo-1533867617858-e7d97e0afd8b",
+                desc: "Tabiiy charmdan tayyorlangan klassik erkaklar oyoq kiyimi.",
+                sizes: ["39", "40", "41", "42", "44"],
+                colors: ["Qora", "Jigarrang"],
+                reviews: [{ name: "Jasur", rating: "⭐⭐⭐⭐", text: "Sifati yaxshi." }]
+            },
+            {
+                title: "Charm Sumka",
+                price: 350000,
+                oldPrice: 400000,
+                image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3",
+                desc: "Ayollar uchun zamonaviy va bejirim charm sumka.",
+                sizes: ["Standard"],
+                colors: ["Qora", "Bej", "Qizil"],
+                reviews: [{ name: "Zumrad", rating: "⭐⭐⭐⭐⭐", text: "Yoqdi, juda chiroyli!" }]
+            },
+            {
+                title: "Simsiz Quloqchin",
+                price: 240000,
+                oldPrice: 300000,
+                image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e",
+                desc: "Toza va tiniq ovoz beruvchi simsiz Bluetooth quloqchin.",
+                sizes: ["Universal"],
+                colors: ["Oq", "Qora"],
+                reviews: [{ name: "Sherzod", rating: "⭐⭐⭐⭐⭐", text: "Zaryadni yaxshi saqlaydi." }]
+            }
+        ];
+
+        let cart = [];
+        let wishlist = [];
+        let currentCategory = 'all';
+        let selectedProductIndex = 0;
+        let selectedSize = '';
+        let selectedColor = '';
+        let selectedPaymentMethod = 'Click';
+
+        // Taymer
+        let timeRemaining = 12 * 3600 + 45 * 60 + 30;
+        setInterval(() => {
+            if(timeRemaining > 0) timeRemaining--;
+            let h = Math.floor(timeRemaining / 3600).toString().padStart(2, '0');
+            let m = Math.floor((timeRemaining % 3600) / 60).toString().padStart(2, '0');
+            let s = (timeRemaining % 60).toString().padStart(2, '0');
+            document.getElementById('promoTimer').textContent = `${h}:${m}:${s}`;
+        }, 1000);
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeText = document.getElementById('themeText');
+            if(html.getAttribute('data-theme') === 'light') {
+                html.setAttribute('data-theme', 'dark');
+                themeText.textContent = 'Kun';
+            } else {
+                html.setAttribute('data-theme', 'light');
+                themeText.textContent = 'Tun';
+            }
+        }
+
+        function toggleCart() {
+            document.getElementById('cartModal').classList.toggle('open');
+        }
+
+        function toggleWishlist() {
+            document.getElementById('wishlistModal').classList.toggle('open');
+            updateWishlistUI();
+        }
+
+        // Sevimlilarga qo'shish / o'chirish
+        function toggleFavorite(index, btn) {
+            const product = productsData[index];
+            const existIndex = wishlist.findIndex(item => item.title === product.title);
+
+            if(existIndex > -1) {
+                wishlist.splice(existIndex, 1);
+                btn.textContent = '🤍';
+            } else {
+                wishlist.push(product);
+                btn.textContent = '❤️';
+            }
+            document.getElementById('wishCount').textContent = wishlist.length;
+            updateWishlistUI();
+        }
+
+        function updateWishlistUI() {
+            const container = document.getElementById('wishlistItemsContainer');
+            if(wishlist.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #888; margin-top: 40px;">Sevimlilar ro\'yxati bo\'sh</p>';
+                return;
+            }
+
+            let html = '';
+            wishlist.forEach((item, index) => {
+                html += `
+                    <div class="cart-item">
+                        <img src="${item.image}" alt="">
+                        <div class="cart-item-info">
+                            <div class="cart-item-title">${item.title}</div>
+                            <div class="cart-item-price">${item.price.toLocaleString()} so'm</div>
+                        </div>
+                        <button class="remove-item" onclick="removeFromWishlist(${index})">O'chirish</button>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function removeFromWishlist(index) {
+            wishlist.splice(index, 1);
+            document.getElementById('wishCount').textContent = wishlist.length;
+            updateWishlistUI();
+        }
+
+        // Tezkor qidirish (Autocomplete)
+        function handleSearchInput() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const listEl = document.getElementById('autocompleteList');
+            
+            filterProducts();
+
+            if(!query) {
+                listEl.style.display = 'none';
+                return;
+            }
+
+            const filtered = productsData.filter(p => p.title.toLowerCase().includes(query));
+            if(filtered.length === 0) {
+                listEl.style.display = 'none';
+                return;
+            }
+
+            let html = '';
+            filtered.forEach(item => {
+                html += `<div class="autocomplete-item" onclick="selectAutocomplete('${item.title}')"><span>${item.title}</span><span style="color:var(--primary); font-weight:700;">${item.price.toLocaleString()} so'm</span></div>`;
+            });
+            listEl.innerHTML = html;
+            listEl.style.display = 'block';
+        }
+
+        function selectAutocomplete(title) {
+            document.getElementById('searchInput').value = title;
+            document.getElementById('autocompleteList').style.display = 'none';
+            filterProducts();
+        }
+
+        function setPayment(method, element) {
+            selectedPaymentMethod = method;
+            document.querySelectorAll('.pay-option').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+
+        function openDetail(index) {
+            selectedProductIndex = index;
+            const p = productsData[index];
+            
+            document.getElementById('modalTitle').textContent = p.title;
+            document.getElementById('modalTitleText').textContent = p.title;
+            document.getElementById('modalPrice').textContent = p.price.toLocaleString() + " so'm";
+            
+            const oldP = document.getElementById('modalOldPrice');
+            if(p.oldPrice > 0) {
+                oldP.textContent = p.oldPrice.toLocaleString() + " so'm";
+                oldP.style.display = 'inline';
+            } else {
+                oldP.style.display = 'none';
+            }
+
+            document.getElementById('modalImage').src = p.image;
+            document.getElementById('modalDesc').textContent = p.desc;
+
+            const sizeBox = document.getElementById('sizeOptions');
+            sizeBox.innerHTML = '';
+            p.sizes.forEach((sz, i) => {
+                let btn = document.createElement('button');
+                btn.className = 'opt-btn' + (i === 0 ? ' selected' : '');
+                btn.textContent = sz;
+                btn.onclick = () => {
+                    document.querySelectorAll('#sizeOptions .opt-btn').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    selectedSize = sz;
+                };
+                sizeBox.appendChild(btn);
+            });
+            selectedSize = p.sizes[0];
+
+            const colorBox = document.getElementById('colorOptions');
+            colorBox.innerHTML = '';
+            p.colors.forEach((col, i) => {
+                let btn = document.createElement('button');
+                btn.className = 'opt-btn' + (i === 0 ? ' selected' : '');
+                btn.textContent = col;
+                btn.onclick = () => {
+                    document.querySelectorAll('#colorOptions .opt-btn').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    selectedColor = col;
+                };
+                colorBox.appendChild(btn);
+            });
+            selectedColor = p.colors[0];
+
+            updateReviewsUI();
+            document.getElementById('detailModal').classList.add('open');
+        }
+
+        function closeDetail() {
+            document.getElementById('detailModal').classList.remove('open');
+        }
+
+        function updateReviewsUI() {
+            const p = productsData[selectedProductIndex];
+            const list = document.getElementById('reviewList');
+            list.innerHTML = '';
+            if(p.reviews.length === 0) {
+                list.innerHTML = '<p style="font-size:12px; color:#888;">Hali sharhlar yo\'q.</p>';
+                return;
+            }
+            p.reviews.forEach(r => {
+                list.innerHTML += `<div class="review-item"><strong>${r.name}</strong> ${r.rating}<br>${r.text}</div>`;
+            });
+        }
+
+        function addReview() {
+            const name = document.getElementById('reviewerName').value.trim();
+            const ratingVal = parseInt(document.getElementById('reviewRating').value);
+            const text = document.getElementById('reviewText').value.trim();
+
+            if(!name || !text) {
+                alert('Iltimos, ismingiz va fikringizni yozing!');
+                return;
+            }
+
+            let stars = '⭐'.repeat(ratingVal);
+            productsData[selectedProductIndex].reviews.push({ name, rating: stars, text });
+            
+            document.getElementById('reviewerName').value = '';
+            document.getElementById('reviewText').value = '';
+            updateReviewsUI();
+            alert('Sharhingiz qo\'shildi!');
+        }
+
+        function addCurrentToCart() {
+            const p = productsData[selectedProductIndex];
+            const uniqueTitle = `${p.title} (${selectedSize}, ${selectedColor})`;
+            
+            const existing = cart.find(item => item.title === uniqueTitle);
+            if(existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({
+                    title: uniqueTitle,
+                    price: p.price,
+                    image: p.image,
+                    quantity: 1
+                });
+            }
+            updateCartUI();
+            closeDetail();
+            alert(`"${p.title}" savatchaga qo'shildi!`);
+        }
+
+        function changeQuantity(index, delta) {
+            cart[index].quantity += delta;
+            if(cart[index].quantity <= 0) {
+                cart.splice(index, 1);
+            }
+            updateCartUI();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cartItemsContainer');
+            const countEl = document.getElementById('cartCount');
+            const totalEl = document.getElementById('totalPrice');
+
+            countEl.textContent = cart.reduce((sum, i) => sum + i.quantity, 0);
+
+            if(cart.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #888; margin-top: 40px;">Savatchangiz bo\'sh</p>';
+                totalEl.textContent = '0 so\'m';
+                return;
+            }
+
+            let html = '';
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price * item.quantity;
+                html += `
+                    <div class="cart-item">
+                        <img src="${item.image}" alt="">
+                        <div class="cart-item-info">
+                            <div class="cart-item-title">${item.title}</div>
+                            <div class="cart-item-price">${(item.price * item.quantity).toLocaleString()} so'm</div>
+                            <div class="qty-controls">
+                                <button class="qty-btn" onclick="changeQuantity(${index}, -1)">-</button>
+                                <span>${item.quantity}</span>
+                                <button class="qty-btn" onclick="changeQuantity(${index}, 1)">+</button>
+                            </div>
+                        </div>
+                        <button class="remove-item" onclick="removeFromCart(${index})">O'chirish</button>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            totalEl.textContent = total.toLocaleString() + " so'm";
+        }
+
+        function setCategory(category, element) {
+            currentCategory = category;
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+            element.classList.add('active');
+            filterProducts();
+        }
+
+        // Qidirish va Narx filtri
+        function filterProducts() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const onlyUnder300k = document.getElementById('priceFilterToggle').checked;
+            const cards = document.querySelectorAll('.product-card');
+
+            cards.forEach(card => {
+                const name = card.getAttribute('data-name').toLowerCase();
+                const cat = card.getAttribute('data-category');
+                const price = parseInt(card.getAttribute('data-price'));
+
+                const matchCat = currentCategory === 'all' || cat === currentCategory;
+                const matchSearch = name.includes(query);
+                const matchPrice = !onlyUnder300k || price <= 300000;
+
+                card.style.display = (matchCat && matchSearch && matchPrice) ? 'flex' : 'none';
+            });
+        }
+
+        function sortProducts() {
+            const val = document.getElementById('sortSelect').value;
+            const grid = document.getElementById('productsGrid');
+            const cards = Array.from(grid.getElementsByClassName('product-card'));
+
+            cards.sort((a, b) => {
+                let pA = parseInt(a.getAttribute('data-price'));
+                let pB = parseInt(b.getAttribute('data-price'));
+                if(val === 'low-high') return pA - pB;
+                if(val === 'high-low') return pB - pA;
+                return 0;
+            });
+
+            cards.forEach(c => grid.appendChild(c));
+        }
+
+        // Buyurtma va Success Popup Modal
+        function checkout() {
+            if(cart.length === 0) {
+                alert('Savatchangiz bo\'sh!');
+                return;
+            }
+
+            const name = document.getElementById('customerName').value.trim();
+            const phone = document.getElementById('customerPhone').value.trim();
+            const address = document.getElementById('customerAddress').value.trim();
+
+            if(!name || !phone || !address) {
+                alert('Iltimos, Ismingiz, Telefon raqamingiz va Manzilingizni to\'liq kiriting!');
+                return;
+            }
+
+            let message = `🛒 Zumrad Shop'dan Yangi Buyurtma!\n\n`;
+            message += `👤 Xaridor: ${name}\n`;
+            message += `📞 Telefon: ${phone}\n`;
+            message += `📍 Manzil: ${address}\n`;
+            message += `💳 To'lov turi: ${selectedPaymentMethod}\n\n`;
+            message += `🛍 Buyurtmalar:\n`;
+
+            let total = 0;
+            cart.forEach((item, index) => {
+                message += `${index + 1}. ${item.title} - ${item.quantity} ta - ${(item.price * item.quantity).toLocaleString()} so'm\n`;
+                total += item.price * item.quantity;
+            });
+
+            message += `\n💰 Jami summa: ${total.toLocaleString()} so'm`;
+            message += `\n\n✨ (Sayt yaratuvchisi: Ibrohimbek)`;
+
+            let telegramUsername = "iun001";
+            let telegramUrl = `https://t.me/${telegramUsername}?text=` + encodeURIComponent(message);
+
+            // Telegramga o'tish va saytning o'zida muvaffaqiyatli xabar oynasini chiqarish
+            window.open(telegramUrl, '_blank');
+            document.getElementById('successModal').classList.add('open');
+
+            cart = [];
+            updateCartUI();
+            toggleCart();
+            document.getElementById('customerName').value = '';
+            document.getElementById('customerPhone').value = '';
+            document.getElementById('customerAddress').value = '';
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').classList.remove('open');
+        }
+    </script>
+</body>
+</html>
