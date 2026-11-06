@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zumrad Shop — Ibrohimbek tomonidan yaratilgan</title>
+    <meta name="description" content="Zumrad Shop - Eng hamyonbop va sifatli mahsulotlar internet do'koni.">
+    <meta name="keywords" content="Zumrad Shop, online do'kon, krossovka, sumka, xarid">
+    <meta name="author" content="Ibrohimbek">
     <style>
         :root {
             --bg-color: #f7f9fa;
@@ -131,9 +134,7 @@
         }
 
         @media(min-width: 768px) {
-            .creator-badge {
-                display: block;
-            }
+            .creator-badge { display: block; }
         }
 
         .action-btn {
@@ -304,7 +305,18 @@
             font-size: 17px;
             font-weight: 700;
             color: var(--primary);
-            margin-bottom: 14px;
+            margin-bottom: 10px;
+        }
+
+        .option-select {
+            width: 100%;
+            padding: 6px 10px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: var(--input-bg);
+            color: var(--text-color);
+            font-size: 13px;
         }
 
         .buy-btn {
@@ -367,7 +379,6 @@
     </header>
 
     <div class="container">
-        <!-- Aksiya Taymeri -->
         <div class="promo-banner">
             <div class="promo-text">
                 <h2>Super Chegirmalar Kunlari!</h2>
@@ -385,11 +396,19 @@
             <form id="addProductForm" style="margin-top: 15px;">
                 <div class="form-group">
                     <label>Mahsulot Nomi</label>
-                    <input type="text" id="prodTitle" required placeholder="Masalan: Sport krossovka">
+                    <input type="text" id="prodTitle" required placeholder="Masalan: Nike Krossovka">
                 </div>
                 <div class="form-group">
                     <label>Narxi (so'mda)</label>
                     <input type="number" id="prodPrice" required placeholder="250000">
+                </div>
+                <div class="form-group">
+                    <label>Ranglar (vergul bilan ajratib yozing)</label>
+                    <input type="text" id="prodColors" placeholder="Masalan: Qora, Oq, Ko'k" required>
+                </div>
+                <div class="form-group">
+                    <label>O'lchamlar / Razmerlar (vergul bilan ajratib yozing)</label>
+                    <input type="text" id="prodSizes" placeholder="Masalan: 39, 40, 41, 42" required>
                 </div>
                 <div class="form-group">
                     <label>Kategoriya</label>
@@ -469,7 +488,7 @@
         <p style="margin-top: 4px; font-size: 12px; opacity: 0.7;">Dasturiy ta'minot muallifi: <strong>Ibrohimbek</strong></p>
     </footer>
 
-    <!-- Firebase 10.8 SDK va Dastur Logikasi -->
+    <!-- Firebase 10.8 SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -535,8 +554,7 @@
             if (!currentUser) {
                 signInWithPopup(auth, googleProvider).catch(err => alert("Kirishda xatolik: " + err.message));
             } else {
-                const cabinet = document.getElementById('userCabinet');
-                cabinet.classList.toggle('active');
+                document.getElementById('userCabinet').classList.toggle('active');
             }
         };
 
@@ -544,7 +562,7 @@
             document.getElementById('adminPanel').classList.toggle('active');
         };
 
-        // Rasm faylini tanlab Base64 formatida to'g'ridan-to'g'ri Firestore'ga saqlash (API shart emas)
+        // Sinxron va xatosiz rasm yuklash funksiyasi (Promise asosida)
         document.getElementById('addProductForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('uploadBtn');
@@ -554,6 +572,8 @@
             try {
                 const title = document.getElementById('prodTitle').value;
                 const price = Number(document.getElementById('prodPrice').value);
+                const colors = document.getElementById('prodColors').value.split(',').map(c => c.trim()).filter(c => c);
+                const sizes = document.getElementById('prodSizes').value.split(',').map(s => s.trim()).filter(s => s);
                 const category = document.getElementById('prodCategory').value;
                 const fileInput = document.getElementById('prodImageFile');
 
@@ -566,46 +586,38 @@
 
                 const file = fileInput.files[0];
 
-                // Faylni Base64 formatga o'tkazish
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                
-                reader.onload = async function() {
-                    try {
-                        const base64Image = reader.result;
+                // FileReader'ni Promise bilan ishlatamiz (qotib qolishni oldini oladi)
+                const base64Image = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = error => reject(error);
+                    reader.readAsDataURL(file);
+                });
 
-                        // Firestore bazasiga saqlash
-                        await addDoc(collection(db, "products"), {
-                            title: title,
-                            price: price,
-                            category: category,
-                            imageUrl: base64Image,
-                            createdAt: serverTimestamp()
-                        });
+                // Firestore bazasiga yozish
+                await addDoc(collection(db, "products"), {
+                    title: title,
+                    price: price,
+                    colors: colors,
+                    sizes: sizes,
+                    category: category,
+                    imageUrl: base64Image,
+                    createdAt: serverTimestamp()
+                });
 
-                        alert("Mahsulot muvaffaqiyatli qo'shildi!");
-                        document.getElementById('addProductForm').reset();
-                        document.getElementById('adminPanel').classList.remove('active');
-                    } catch (err) {
-                        alert("Bazaga saqlashda xatolik: " + err.message);
-                    } finally {
-                        btn.disabled = false;
-                        btn.textContent = "Bulutga Saqlash";
-                    }
-                };
-
-                reader.onerror = function() {
-                    throw new Error("Rasmni o'qib bo'lmadi");
-                };
+                alert("Mahsulot muvaffaqiyatli saqlandi!");
+                document.getElementById('addProductForm').reset();
+                document.getElementById('adminPanel').classList.remove('active');
 
             } catch (err) {
-                alert("Xatolik: " + err.message);
+                alert("Xatolik yuz berdi: " + err.message);
+            } finally {
                 btn.disabled = false;
                 btn.textContent = "Bulutga Saqlash";
             }
         });
 
-        // Real-time Mahsulotlarni olish
+        // Real-time ma'lumot olish
         onSnapshot(query(collection(db, "products"), orderBy("createdAt", "desc")), (snapshot) => {
             productsData = [];
             snapshot.forEach(doc => productsData.push({ id: doc.id, ...doc.data() }));
@@ -618,16 +630,31 @@
                 grid.innerHTML = '<p style="text-align: center; grid-column: 1/-1; color: #888;">Hozircha mahsulotlar mavjud emas.</p>';
                 return;
             }
-            grid.innerHTML = items.map(p => `
+            grid.innerHTML = items.map(p => {
+                const colors = p.colors || ["Standart"];
+                const sizes = p.sizes || ["Standart"];
+                
+                return `
                 <div class="product-card">
                     <div class="product-image"><img src="${p.imageUrl}" alt="${p.title}" onerror="this.src='https://via.placeholder.com/300?text=Zumrad+Shop'"></div>
                     <div class="product-info">
                         <div class="product-title">${p.title}</div>
                         <div class="product-price">${Number(p.price).toLocaleString()} so'm</div>
+                        
+                        <label style="font-size:11px; font-weight:bold;">Rangni tanlang:</label>
+                        <select id="color-${p.id}" class="option-select">
+                            ${colors.map(c => `<option value="${c}">${c}</option>`).join('')}
+                        </select>
+
+                        <label style="font-size:11px; font-weight:bold;">O'lchamni tanlang:</label>
+                        <select id="size-${p.id}" class="option-select">
+                            ${sizes.map(s => `<option value="${s}">${s}</option>`).join('')}
+                        </select>
+
                         <button class="buy-btn" onclick="addToCart('${p.id}', '${p.title}', ${p.price}, '${p.imageUrl}')">Sotib olish</button>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
         // Qidirish va Filtr
@@ -663,19 +690,40 @@
         searchInput.addEventListener('input', filterAndSort);
         sortSelect.addEventListener('change', filterAndSort);
 
-        // Savat logikasi
+        // Savat Logikasi
         window.addToCart = function(id, title, price, image) {
-            const found = cart.find(i => i.id === id);
-            if (found) { found.qty++; } else { cart.push({ id, title, price, image, qty: 1 }); }
+            const colorEl = document.getElementById(`color-${id}`);
+            const sizeEl = document.getElementById(`size-${id}`);
+            
+            const selectedColor = colorEl ? colorEl.value : "Standart";
+            const selectedSize = sizeEl ? sizeEl.value : "Standart";
+
+            const cartItemId = `${id}-${selectedColor}-${selectedSize}`;
+            const found = cart.find(i => i.cartItemId === cartItemId);
+
+            if (found) { 
+                found.qty++; 
+            } else { 
+                cart.push({ 
+                    cartItemId, 
+                    id, 
+                    title, 
+                    price, 
+                    image, 
+                    color: selectedColor, 
+                    size: selectedSize, 
+                    qty: 1 
+                }); 
+            }
             updateCart();
-            alert(`"${title}" savatchaga qo'shildi!`);
+            alert(`"${title}" (${selectedColor}, ${selectedSize}) savatga qo'shildi!`);
         };
 
-        window.changeQty = function(id, delta) {
-            const item = cart.find(i => i.id === id);
+        window.changeQty = function(cartItemId, delta) {
+            const item = cart.find(i => i.cartItemId === cartItemId);
             if (item) {
                 item.qty += delta;
-                if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
+                if (item.qty <= 0) cart = cart.filter(i => i.cartItemId !== cartItemId);
             }
             updateCart();
         };
@@ -703,12 +751,13 @@
                     <img src="${item.image}" alt="${item.title}">
                     <div style="flex:1;">
                         <div style="font-weight:600; font-size:14px;">${item.title}</div>
+                        <div style="font-size:12px; color:#666;">Rang: <b>${item.color}</b> | O'lcham: <b>${item.size}</b></div>
                         <div style="color:var(--primary); font-weight:700;">${(item.price * item.qty).toLocaleString()} so'm</div>
                     </div>
                     <div class="qty-controls">
-                        <button class="qty-btn" onclick="changeQty('${item.id}', -1)">-</button>
+                        <button class="qty-btn" onclick="changeQty('${item.cartItemId}', -1)">-</button>
                         <span>${item.qty}</span>
-                        <button class="qty-btn" onclick="changeQty('${item.id}', 1)">+</button>
+                        <button class="qty-btn" onclick="changeQty('${item.cartItemId}', 1)">+</button>
                     </div>
                 </div>
             `).join('');
@@ -724,10 +773,10 @@
             let total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
             let message = `🛒 Zumrad Shop'dan Yangi Buyurtma!\n\n`;
             cart.forEach((item, index) => {
-                message += `${index + 1}. ${item.title} - ${item.qty} ta - ${(item.price * item.qty).toLocaleString()} so'm\n`;
+                message += `${index + 1}. ${item.title}\n   🎨 Rang: ${item.color}\n   📏 Razmer: ${item.size}\n   📦 Soni: ${item.qty} ta\n   💵 Narx: ${(item.price * item.qty).toLocaleString()} so'm\n\n`;
             });
-            message += `\n💰 Jami summa: ${total.toLocaleString()} so'm`;
-            message += `\n\n✨ (Sayt yaratuvchisi: Ibrohimbek)`;
+            message += `💰 Jami summa: ${total.toLocaleString()} so'm`;
+            message += `\n✨ Muallif: Ibrohimbek`;
 
             let telegramUrl = `https://t.me/iun001?text=` + encodeURIComponent(message);
             window.open(telegramUrl, '_blank');
@@ -737,7 +786,7 @@
             toggleCart();
         };
 
-        // Sharhlar
+        // Sharhlar Tizimi
         onSnapshot(query(collection(db, "comments"), orderBy("createdAt", "desc")), (snapshot) => {
             const list = document.getElementById('commentsList');
             let html = '';
